@@ -1,7 +1,11 @@
-﻿using MediatR;
+﻿using System;
+using System.Linq;
+using MediatR;
 using Microsoft.eShopOnContainers.Services.Ordering.Infrastructure.Idempotency;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
 {
@@ -45,20 +49,13 @@ namespace Microsoft.eShopOnContainers.Services.Ordering.API.Application.Commands
             {
                 return CreateResultForDuplicateRequest();
             }
-            else
-            {
-                await _requestManager.CreateRequestForCommandAsync<T>(message.Id);
-				try
-				{
-					// Send the embeded business command to mediator so it runs its related CommandHandler 
-					var result = await _mediator.Send(message.Command);
-					return result;
-				}
-				catch
-				{
-					return default(R);
-				}
-            }
+
+            await _requestManager.CreateRequestForCommandAsync<T>(message.Id);
+
+            // Send the embeded business command to mediator so it runs its related CommandHandler 
+            var result = await _mediator.Send(message.Command);
+
+            return result;
         }
     }
 }
