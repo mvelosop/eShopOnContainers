@@ -4,14 +4,13 @@ EXPOSE 80
 
 FROM microsoft/dotnet:2.1-sdk AS build
 WORKDIR /src
-COPY src/ApiGateways/ApiGw-Base/OcelotApiGw.csproj src/ApiGateways/ApiGw-Base/
-RUN dotnet restore src/ApiGateways/ApiGw-Base/
 COPY . .
+RUN dotnet restore /ignoreprojectextensions:.dcproj
 WORKDIR /src/src/ApiGateways/ApiGw-Base/
-RUN dotnet build -c Release -o /app
+RUN dotnet build --no-restore -c Release -o /app
 
 FROM build AS publish
-RUN dotnet publish -c Release -o /app
+RUN dotnet publish --no-restore -c Release -o /app
 
 FROM base AS final
 WORKDIR /app

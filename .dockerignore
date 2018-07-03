@@ -5,7 +5,6 @@
 .vs
 .vscode
 docker-compose*.yml
-docker-compose.dcproj
 *.sln
 !eShopOnContainers-ServicesAndWebApps.sln
 *.md
@@ -13,7 +12,6 @@ hosts
 LICENSE
 *.testsettings
 vsts-docs
-test
 ServiceFabric
 readme
 k8s
@@ -33,4 +31,5 @@ cli-linux
 !**/wwwroot/lib/toastr/*
 global.json
 **/appsettings.localhost.json
+**/Dockerfile
 src/Web/WebSPA/wwwroot/

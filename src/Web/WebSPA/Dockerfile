@@ -3,22 +3,23 @@ FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/dotnet:2.1-sdk as dotnet-build
-WORKDIR /src
-
 FROM ${NODE_IMAGE} as node-build
 WORKDIR /web
 COPY src/Web/WebSPA .
 RUN npm install
 RUN npm run build:prod
 
-FROM dotnet-build as publish
-WORKDIR /src/src/Web/WebSPA/wwwroot
-COPY --from=node-build /web/wwwroot .
+FROM microsoft/dotnet:2.1-sdk as dotnet-build
 WORKDIR /src
 COPY . .
+RUN dotnet restore /ignoreprojectextensions:.dcproj
+WORKDIR /src/src/Web/WebSPA/wwwroot
+COPY --from=node-build /web/wwwroot .
 WORKDIR /src/src/Web/WebSPA
-RUN dotnet publish -c Release -o /app
+RUN dotnet build --no-restore -c Release -o /app
+
+FROM dotnet-build as publish
+RUN dotnet publish --no-restore -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
