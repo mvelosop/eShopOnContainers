@@ -7,7 +7,6 @@ WORKDIR /src
 COPY . .
 RUN dotnet restore /ignoreprojectextensions:.dcproj
 WORKDIR /src/src/Services/Catalog/Catalog.API
-RUN dotnet build --no-restore -c Release -o /app
 
 FROM build AS publish
 RUN dotnet publish --no-restore -c Release -o /app

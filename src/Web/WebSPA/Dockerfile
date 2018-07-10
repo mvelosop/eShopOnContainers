@@ -16,9 +16,9 @@ RUN dotnet restore /ignoreprojectextensions:.dcproj
 WORKDIR /src/src/Web/WebSPA/wwwroot
 COPY --from=node-build /web/wwwroot .
 WORKDIR /src/src/Web/WebSPA
-RUN dotnet build --no-restore -c Release -o /app
+RUN dotnet restore 
 
-FROM dotnet-build as publish
+FROM dotnet-build AS publish
 RUN dotnet publish --no-restore -c Release -o /app
 
 FROM base AS final

@@ -16,7 +16,7 @@ RUN dotnet restore /ignoreprojectextensions:.dcproj
 WORKDIR /src/src/Services/Identity/Identity.API/wwwroot
 COPY --from=node-build /web/wwwroot .
 WORKDIR /src/src/Services/Identity/Identity.API
-RUN dotnet build --no-restore -c Release -o /app
+RUN dotnet restore 
 
 FROM dotnet-build AS publish
 RUN dotnet publish --no-restore -c Release -o /app

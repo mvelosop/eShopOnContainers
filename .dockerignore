@@ -12,6 +12,8 @@ hosts
 LICENSE
 *.testsettings
 vsts-docs
+test
+!test/**/*.csproj
 ServiceFabric
 readme
 k8s

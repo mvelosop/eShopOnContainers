@@ -7,7 +7,6 @@ WORKDIR /src
 COPY . .
 RUN dotnet restore /ignoreprojectextensions:.dcproj
 WORKDIR /src/src/Services/Ordering/Ordering.SignalrHub
-RUN dotnet build  --no-restore  Ordering.SignalrHub.csproj -c Release -o /app
 
 FROM build AS publish
 RUN dotnet publish  --no-restore  Ordering.SignalrHub.csproj -c Release -o /app
