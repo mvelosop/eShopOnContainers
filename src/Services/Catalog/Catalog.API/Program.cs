@@ -43,8 +43,8 @@ namespace Microsoft.eShopOnContainers.Services.Catalog.API
                 .ConfigureLogging((hostingContext, builder) =>
                 {
                     builder.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    builder.AddConsole();
                     builder.AddDebug();
+                    builder.AddConsole();
                 })                
                 .Build();    
     }

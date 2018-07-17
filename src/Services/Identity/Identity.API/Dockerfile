@@ -3,22 +3,20 @@ FROM microsoft/dotnet:2.1-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM ${NODE_IMAGE} as node-build
+FROM ${NODE_IMAGE} as build
 WORKDIR /web
 COPY src/Services/Identity/Identity.API .
 RUN npm install -g bower@1.8.4
 RUN bower install --allow-root
 
-FROM microsoft/dotnet:2.1-sdk as dotnet-build
+FROM microsoft/dotnet:2.1-sdk as publish
 WORKDIR /src
 COPY . .
 RUN dotnet restore /ignoreprojectextensions:.dcproj
 WORKDIR /src/src/Services/Identity/Identity.API/wwwroot
-COPY --from=node-build /web/wwwroot .
+COPY --from=build /web/wwwroot .
 WORKDIR /src/src/Services/Identity/Identity.API
 RUN dotnet restore 
-
-FROM dotnet-build AS publish
 RUN dotnet publish --no-restore -c Release -o /app
 
 FROM base AS final
