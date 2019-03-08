@@ -12,6 +12,7 @@ docker-compose.dcproj
 hosts
 LICENSE
 *.testsettings
+build
 vsts-docs
 test
 ServiceFabric
