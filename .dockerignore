@@ -5,16 +5,13 @@
 .vs
 .vscode
 docker-compose*.yml
-docker-compose.dcproj
 *.sln
-!eShopOnContainers-ServicesAndWebApps.sln
 *.md
 hosts
 LICENSE
 *.testsettings
 build
 vsts-docs
-test
 ServiceFabric
 readme
 k8s
@@ -33,3 +30,7 @@ cli-linux
 global.json
 **/appsettings.localhost.json
 src/Web/WebSPA/wwwroot/
+test
+TestResults
+test-results
+src/Mobile/

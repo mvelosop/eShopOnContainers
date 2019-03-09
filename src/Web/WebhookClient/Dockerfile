@@ -3,16 +3,12 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM microsoft/dotnet:2.2-sdk AS build
+FROM microsoft/dotnet:2.2-sdk AS publish
 WORKDIR /src
-COPY ["src/Web/WebhookClient/WebhookClient.csproj", "src/Web/WebhookClient/"]
-RUN dotnet restore "src/Web/WebhookClient/WebhookClient.csproj"
 COPY . .
-WORKDIR "/src/src/Web/WebhookClient"
-RUN dotnet build "WebhookClient.csproj" -c Release -o /app
-
-FROM build AS publish
-RUN dotnet publish "WebhookClient.csproj" -c Release -o /app
+WORKDIR /src/src/Web/WebhookClient
+RUN dotnet restore --packages /src/packages
+RUN dotnet publish -c Release -o /app
 
 FROM base AS final
 WORKDIR /app

@@ -1,15 +1,12 @@
-FROM microsoft/dotnet:2.2.0-aspnetcore-runtime AS base
+FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/dotnet:2.2.100-sdk AS build
+FROM microsoft/dotnet:2.2-sdk AS publish
 WORKDIR /src
 COPY . .
 WORKDIR /src/src/ApiGateways/ApiGw-Base/
-RUN dotnet restore -nowarn:msb3202,nu1503
-RUN dotnet build -c Release -o /app
-
-FROM build AS publish
+RUN dotnet restore --packages /src/packages
 RUN dotnet publish -c Release -o /app
 
 FROM base AS final

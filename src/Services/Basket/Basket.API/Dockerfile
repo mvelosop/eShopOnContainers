@@ -1,22 +1,19 @@
-FROM microsoft/dotnet:2.2.0-aspnetcore-runtime AS base
+FROM microsoft/dotnet:2.2-aspnetcore-runtime AS base
 WORKDIR /app
 EXPOSE 80
 
-FROM microsoft/dotnet:2.2.100-sdk AS build
+FROM microsoft/dotnet:2.2-sdk AS publish
 WORKDIR /src
 COPY . .
 WORKDIR /src/src/Services/Basket/Basket.API
-RUN dotnet restore -nowarn:msb3202,nu1503
-RUN dotnet build --no-restore -c Release -o /app
+RUN dotnet restore --packages /src/packages
+RUN dotnet publish --no-restore -c Release -o /app
 
-FROM build as functionaltest
+FROM publish as functionaltest
 WORKDIR /src/src/Services/Basket/Basket.FunctionalTests
 
-FROM build as unittest
+FROM publish as unittest
 WORKDIR /src/src/Services/Basket/Basket.UnitTests
-
-FROM build AS publish
-RUN dotnet publish --no-restore -c Release -o /app
 
 FROM base AS final
 WORKDIR /app
